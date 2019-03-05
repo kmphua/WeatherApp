@@ -9,19 +9,23 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 
 public class WeatherApiClient {
     private static final String TAG = "WeatherApiClient";
 
     private static final String OPEN_WEATHER_API =
-            "http://api.openweathermap.org/data/2.5/weather?q=%s&units=metric";
+            "http://api.openweathermap.org/data/2.5/weather?lat=%.6f&lon=%.6f&units=%s";
 
     private static final String OPEN_FORECAST_API =
-            "http://api.openweathermap.org/data/2.5/forecast?q=%s&units=metric";
+            "http://api.openweathermap.org/data/2.5/forecast?lat=%.6f&lon=%.6f&units=%s";
 
-    public static String getCurrentWeather(Context context, String city){
+    public static String getCurrentWeather(Context context, double lat, double lon){
         try {
-            URL url = new URL(String.format(OPEN_WEATHER_API, city));
+            // TODO: Get current imperial/metric settings
+            String measurement = "metric";
+
+            URL url = new URL(String.format(OPEN_WEATHER_API, lat, lon, measurement));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
 
@@ -44,9 +48,12 @@ public class WeatherApiClient {
         }
     }
 
-    public static String getWeatherForecast(Context context, String city){
+    public static String getWeatherForecast(Context context, double lat, double lon){
         try {
-            URL url = new URL(String.format(OPEN_FORECAST_API, city));
+            // TODO: Get current imperial/metric settings
+            String measurement = "metric";
+
+            URL url = new URL(String.format(OPEN_FORECAST_API, lat, lon, measurement));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
 

@@ -24,15 +24,12 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Open map fragment to select location
+                // Open map fragment to select location
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment, new MapFragment());
+                fragmentTransaction.add(R.id.fragment, new MapFragment());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
-
-//                Snackbar.make(view, R.string.add_new_location, Snackbar.LENGTH_LONG)
-  //                      .setAction("Action", null).show();
             }
         });
     }

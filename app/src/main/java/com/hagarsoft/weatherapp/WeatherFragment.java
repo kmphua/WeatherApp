@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.hagarsoft.weatherapp.data.Coord;
 import com.hagarsoft.weatherapp.data.CurrentWeather;
 import com.hagarsoft.weatherapp.data.Weather;
 import com.hagarsoft.weatherapp.data.WeatherApiClient;
@@ -44,24 +45,23 @@ import java.util.Locale;
 public class WeatherFragment extends Fragment {
     private static final String TAG = "WeatherFragment";
 
-    private static final String WEATHER_ICON_API = "http://openweathermap.org/img/w/%s.png";
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // Parameter arguments
+    private static final String ARG_NAME = "paramName";
     private static final String ARG_LAT = "paramLat";
     private static final String ARG_LON = "paramLon";
 
-    // TODO: Rename and change types of parameters
-    private float mLat;
-    private float mLon;
+    // Internal parameters
+    private String mName;   // name
+    private double mLat;    // latitude
+    private double mLon;    // longitude
 
     //private OnFragmentInteractionListener mListener;
-
+    Typeface weatherFont;
     TextView cityField;
     TextView updatedField;
     TextView detailsField;
     TextView currentTemperatureField;
-    ImageView weatherIcon;
+    TextView weatherIcon;
 
     Handler handler;
 
@@ -73,16 +73,17 @@ public class WeatherFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param name WeatherLocation name.
+     * @param lat WeatherLocation latitude.
+     * @param lon WeatherLocation longitude.
      * @return A new instance of fragment WeatherFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static WeatherFragment newInstance(float lat, float lon) {
+    public static WeatherFragment newInstance(String name, double lat, double lon) {
         WeatherFragment fragment = new WeatherFragment();
         Bundle args = new Bundle();
-        args.putFloat(ARG_LAT, lat);
-        args.putFloat(ARG_LON, lon);
+        args.putString(ARG_NAME, name);
+        args.putDouble(ARG_LAT, lat);
+        args.putDouble(ARG_LON, lon);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,11 +91,15 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
         if (getArguments() != null) {
-            mLat = getArguments().getFloat(ARG_LAT);
-            mLon = getArguments().getFloat(ARG_LON);
+            mName = getArguments().getString(ARG_NAME);
+            mLat = getArguments().getDouble(ARG_LAT);
+            mLon = getArguments().getDouble(ARG_LON);
+            updateWeatherData(mLat, mLon);
+        } else {
+            updateWeatherData(25.0330, 121.5654);
         }
-        updateWeatherData("Tokyo");
     }
 
     @Override
@@ -105,7 +110,9 @@ public class WeatherFragment extends Fragment {
         updatedField = (TextView)rootView.findViewById(R.id.updated_field);
         detailsField = (TextView)rootView.findViewById(R.id.details_field);
         currentTemperatureField = (TextView)rootView.findViewById(R.id.current_temperature_field);
-        weatherIcon = (ImageView)rootView.findViewById(R.id.weather_icon);
+        weatherIcon = (TextView)rootView.findViewById(R.id.weather_icon);
+        weatherIcon.setTypeface(weatherFont);
+
         return rootView;
     }
 
@@ -154,10 +161,10 @@ public class WeatherFragment extends Fragment {
     }
 */
 
-    private void updateWeatherData(final String city){
+    private void updateWeatherData(final double lat, final double lon) {
         new Thread(){
             public void run(){
-                final String json = WeatherApiClient.getCurrentWeather(getActivity(), city);
+                final String json = WeatherApiClient.getCurrentWeather(getActivity(), lat, lon);
                 Log.d(TAG, "JSON string = " + json);
                 if(json == null){
                     handler.post(new Runnable(){
@@ -200,16 +207,19 @@ public class WeatherFragment extends Fragment {
             String updatedOn = df.format(new Date(currWeather.dt*1000));
             updatedField.setText("Last update: " + updatedOn);
 
-            setWeatherIcon(weather.icon);
+            setWeatherIcon(weather.id,
+                           currWeather.sys.sunrise * 1000,
+                            currWeather.sys.sunrise * 1000);
+
         } catch (Exception e) {
             Log.e(TAG,"Exception occurred: " + e.getLocalizedMessage());
         }
     }
 
-    private void updateForecastData(final String city){
+    private void updateForecastData(final double lat, final double lon){
         new Thread(){
             public void run(){
-                final String json = WeatherApiClient.getWeatherForecast(getActivity(), city);
+                final String json = WeatherApiClient.getWeatherForecast(getActivity(), lat, lon);
                 Log.d(TAG, "JSON string = " + json);
                 if(json == null){
                     handler.post(new Runnable(){
@@ -240,11 +250,33 @@ public class WeatherFragment extends Fragment {
         }
     }
 
-    private void setWeatherIcon(String iconId) {
-        String iconUrl = String.format(WEATHER_ICON_API, iconId);
-        Log.d(TAG, "Weather icon URL = " + iconUrl);
-        new DownloadImageTask(weatherIcon)
-                .execute(iconUrl);
+    private void setWeatherIcon(int actualId, long sunrise, long sunset){
+        int id = actualId / 100;
+        String icon = "";
+        if(actualId == 800){
+            long currentTime = new Date().getTime();
+            if(currentTime>=sunrise && currentTime<sunset) {
+                icon = getActivity().getString(R.string.weather_sunny);
+            } else {
+                icon = getActivity().getString(R.string.weather_clear_night);
+            }
+        } else {
+            switch(id) {
+                case 2 : icon = getActivity().getString(R.string.weather_thunder);
+                    break;
+                case 3 : icon = getActivity().getString(R.string.weather_drizzle);
+                    break;
+                case 7 : icon = getActivity().getString(R.string.weather_foggy);
+                    break;
+                case 8 : icon = getActivity().getString(R.string.weather_cloudy);
+                    break;
+                case 6 : icon = getActivity().getString(R.string.weather_snowy);
+                    break;
+                case 5 : icon = getActivity().getString(R.string.weather_rainy);
+                    break;
+            }
+        }
+        weatherIcon.setText(icon);
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
