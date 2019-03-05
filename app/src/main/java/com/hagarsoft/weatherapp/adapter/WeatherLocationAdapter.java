@@ -12,16 +12,17 @@ import android.widget.TextView;
 import com.hagarsoft.weatherapp.R;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 
+import java.util.List;
 import java.util.Locale;
 
 public class WeatherLocationAdapter extends ArrayAdapter<WeatherLocation> {
 
     private Context context;
     private int layoutResourceId;
-    private WeatherLocation data[] = null;
+    private List<WeatherLocation> data;
     private Typeface weatherFont;
 
-    public WeatherLocationAdapter(Context context, int layoutResourceId, WeatherLocation data[]) {
+    public WeatherLocationAdapter(Context context, int layoutResourceId, List<WeatherLocation> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -48,11 +49,11 @@ public class WeatherLocationAdapter extends ArrayAdapter<WeatherLocation> {
             holder = (LocationArrayHolder)row.getTag();
         }
 
-        WeatherLocation weather = data[position];
-        holder.txtName.setText(weather.name);
-        holder.txtIcon.setText(weather.weatherIcon);
+        WeatherLocation weather = data.get(position);
+        holder.txtName.setText(weather.getName());
+        holder.txtIcon.setText(weather.getWeatherIcon());
         holder.txtIcon.setTypeface(weatherFont);
-        holder.txtTemp.setText(String.format(Locale.getDefault(), "%.0f℃", weather.tempC));
+        holder.txtTemp.setText(String.format(Locale.getDefault(), "%.0f℃", weather.getTempCeisius()));
 
         return row;
     }

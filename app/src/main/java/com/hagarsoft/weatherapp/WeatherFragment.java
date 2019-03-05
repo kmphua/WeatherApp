@@ -1,10 +1,9 @@
 package com.hagarsoft.weatherapp;
 
-import android.content.Context;
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,18 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.hagarsoft.weatherapp.data.Coord;
 import com.hagarsoft.weatherapp.data.CurrentWeather;
 import com.hagarsoft.weatherapp.data.Weather;
 import com.hagarsoft.weatherapp.data.WeatherApiClient;
 import com.hagarsoft.weatherapp.data.WeatherForecast;
+import com.hagarsoft.weatherapp.data.WeatherLocation;
+import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
-import org.json.JSONObject;
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -45,17 +40,8 @@ import java.util.Locale;
 public class WeatherFragment extends Fragment {
     private static final String TAG = "WeatherFragment";
 
-    // Parameter arguments
-    private static final String ARG_NAME = "paramName";
-    private static final String ARG_LAT = "paramLat";
-    private static final String ARG_LON = "paramLon";
+    private WeatherLocationViewModel viewModel;
 
-    // Internal parameters
-    private String mName;   // name
-    private double mLat;    // latitude
-    private double mLon;    // longitude
-
-    //private OnFragmentInteractionListener mListener;
     Typeface weatherFont;
     TextView cityField;
     TextView updatedField;
@@ -69,37 +55,17 @@ public class WeatherFragment extends Fragment {
         handler = new Handler();
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param name WeatherLocation name.
-     * @param lat WeatherLocation latitude.
-     * @param lon WeatherLocation longitude.
-     * @return A new instance of fragment WeatherFragment.
-     */
-    public static WeatherFragment newInstance(String name, double lat, double lon) {
-        WeatherFragment fragment = new WeatherFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_NAME, name);
-        args.putDouble(ARG_LAT, lat);
-        args.putDouble(ARG_LON, lon);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
-        if (getArguments() != null) {
-            mName = getArguments().getString(ARG_NAME);
-            mLat = getArguments().getDouble(ARG_LAT);
-            mLon = getArguments().getDouble(ARG_LON);
-            updateWeatherData(mLat, mLon);
-        } else {
-            updateWeatherData(25.0330, 121.5654);
-        }
+
+        viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
+
+        viewModel.getSelectedLocation().observe(this, item -> {
+            WeatherLocation location = viewModel.getLocationDetails(item);
+            updateWeatherData(location.getLat(), location.getLon());
+        });
     }
 
     @Override
@@ -115,51 +81,6 @@ public class WeatherFragment extends Fragment {
 
         return rootView;
     }
-
-    /*
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-*/
-
-    /*
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-    */
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    /*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-*/
 
     private void updateWeatherData(final double lat, final double lon) {
         new Thread(){
