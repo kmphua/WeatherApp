@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements MapFragment.OnMapDataPass {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     @Override
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements MapFragment.OnMap
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,11 +29,12 @@ public class MainActivity extends AppCompatActivity implements MapFragment.OnMap
                 // Open map fragment to select location
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.fragment, new MapFragment());
+                fragmentTransaction.replace(R.id.fragment, new MapFragment());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
+        */
     }
 
     @Override
@@ -55,10 +57,5 @@ public class MainActivity extends AppCompatActivity implements MapFragment.OnMap
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onMapDataPass(String name, double lat, double lon) {
-        Log.d(TAG,"Adding new location " + name + " (lat:" + lat + ", lon:" + lon + ")");
     }
 }

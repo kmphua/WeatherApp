@@ -51,10 +51,15 @@ public class WeatherLocationAdapter extends ArrayAdapter<WeatherLocation> {
 
         WeatherLocation weather = data.get(position);
         holder.txtName.setText(weather.getName());
-        holder.txtIcon.setText(weather.getWeatherIcon());
-        holder.txtIcon.setTypeface(weatherFont);
-        holder.txtTemp.setText(String.format(Locale.getDefault(), "%.0f℃", weather.getTempCeisius()));
 
+        if (weather.getLastUpdated() > 0) {
+            holder.txtIcon.setText(weather.getWeatherIcon());
+            holder.txtIcon.setTypeface(weatherFont);
+            holder.txtTemp.setText(String.format(Locale.getDefault(), "%.0f℃", weather.getTempCeisius()));
+        } else {
+            holder.txtIcon.setText("");
+            holder.txtTemp.setText("--℃");
+        }
         return row;
     }
 

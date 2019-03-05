@@ -1,5 +1,6 @@
 package com.hagarsoft.weatherapp;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.hagarsoft.weatherapp.data.WeatherLocation;
+import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,30 +35,21 @@ import java.util.Locale;
 public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = "MapFragment";
 
+    private WeatherLocationViewModel viewModel;
     private GoogleMap mMap;
     private String mCityName;
     private double mLat;
     private double mLon;
-    OnMapDataPass dataPasser;
-
-    public interface OnMapDataPass {
-        public void onMapDataPass(String name, double lat, double lon);
-    }
 
     public MapFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        dataPasser = (OnMapDataPass) context;
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Log.d(TAG, "onActivityCreated");
+        viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
     }
 
     @Override
@@ -119,7 +113,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     @Override
                     public void onClick(View view) {
                         Log.d(TAG, "Added location " + mCityName);
-                        dataPasser.onMapDataPass(mCityName, mLat, mLon);
+                        viewModel.addLocation(new WeatherLocation(mCityName, mLat, mLon));
                     }
                 });
                 snackBar.show();

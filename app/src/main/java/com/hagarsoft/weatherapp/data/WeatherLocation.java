@@ -8,6 +8,7 @@ public class WeatherLocation {
     private String weatherIcon;
     private double tempCelsius;
     private double tempFahrenheit;
+    private long lastUpdated;
 
     public WeatherLocation(String name, double lat, double lon) {
         this.name = name;
@@ -71,5 +72,13 @@ public class WeatherLocation {
     public void setTempFahrenheit(double tempFahrenheit) {
         this.tempFahrenheit = tempFahrenheit;
         this.tempCelsius =  ((tempFahrenheit - 32)*5)/9;
+    }
+
+    public long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(long timestamp) {
+        this.lastUpdated = timestamp;
     }
 }

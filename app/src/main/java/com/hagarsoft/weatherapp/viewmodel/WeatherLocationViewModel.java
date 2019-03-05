@@ -6,24 +6,35 @@ import android.arch.lifecycle.ViewModel;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 import com.hagarsoft.weatherapp.data.WeatherLocationsRepository;
 
+import java.util.List;
+
 public class WeatherLocationViewModel extends ViewModel {
-    private final MutableLiveData<String> selectedLocation = new MutableLiveData<String>();
+
+    private final MutableLiveData<Integer> selectedLocation = new MutableLiveData<>();
 
     private WeatherLocationsRepository repository = new WeatherLocationsRepository();
 
-    public void selectLocation(String location) {
-        selectedLocation.setValue(location);
+    public void selectLocation(int i) {
+        selectedLocation.setValue(i);
     }
 
-    public MutableLiveData<String> getSelectedLocation() {
+    public MutableLiveData<Integer> getSelectedLocation() {
         return selectedLocation;
     }
 
-    public String[] getLocationList(){
+    public List<WeatherLocation> getLocationList() {
         return repository.getLocations();
     }
 
-    public WeatherLocation getLocationDetails(String name){
-        return repository.getLocationDetails(name);
+    public WeatherLocation getLocation(int i) {
+        return repository.getLocation(i);
+    }
+
+    public void addLocation(WeatherLocation location) {
+        repository.addLocation(location);
+    }
+
+    public void deleteLocation(int i) {
+        repository.deleteLocation(i);
     }
 }

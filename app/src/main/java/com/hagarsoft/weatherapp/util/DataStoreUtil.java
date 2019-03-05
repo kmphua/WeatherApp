@@ -48,12 +48,4 @@ public class DataStoreUtil {
         editor.putString(SHARED_PREFERENCES_KEY_LOCATION_LIST, locationListJsonString);
         editor.apply();
     }
-
-    public static boolean addWeatherLocation(WeatherLocation location) {
-        return false;
-    }
-
-    public static boolean removeWeatherLocation(WeatherLocation location) {
-        return false;
-    }
 }

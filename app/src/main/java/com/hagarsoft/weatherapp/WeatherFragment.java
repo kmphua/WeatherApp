@@ -63,7 +63,7 @@ public class WeatherFragment extends Fragment {
         viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
 
         viewModel.getSelectedLocation().observe(this, item -> {
-            WeatherLocation location = viewModel.getLocationDetails(item);
+            WeatherLocation location = viewModel.getLocation(item);
             updateWeatherData(location.getLat(), location.getLon());
         });
     }
