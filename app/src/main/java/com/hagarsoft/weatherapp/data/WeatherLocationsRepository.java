@@ -29,11 +29,17 @@ public class WeatherLocationsRepository {
     }
 
     public void addLocation(WeatherLocation location) {
+        if (mLocations == null) {
+            mLocations = new ArrayList<>();
+        }
         mLocations.add(location);
         DataStoreUtil.saveLocationData(mContext, mLocations);
     }
 
     public void deleteLocation(int i) {
+        if (mLocations == null) {
+            return;
+        }
         mLocations.remove(i);
         DataStoreUtil.saveLocationData(mContext, mLocations);
     }

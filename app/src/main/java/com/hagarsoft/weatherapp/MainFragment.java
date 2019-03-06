@@ -18,6 +18,8 @@ import com.hagarsoft.weatherapp.adapter.WeatherLocationAdapter;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
+import java.util.List;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -42,10 +44,14 @@ public class MainFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
-
-        // Load saved locations from SharedPreferences
-        adapter = new WeatherLocationAdapter(getActivity(), R.layout.row_item, viewModel.getLocationList());
-        setListAdapter(adapter);
+        List<WeatherLocation> locationList = viewModel.getLocationList();
+        if (locationList != null) {
+            // Load saved locations from SharedPreferences
+            adapter = new WeatherLocationAdapter(getActivity(), R.layout.row_item, locationList);
+            setListAdapter(adapter);
+        } else {
+            Log.d(TAG, "Empty location list!");
+        }
     }
 
     @Override
@@ -94,11 +100,17 @@ public class MainFragment extends ListFragment {
         // Show floating action button
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.hideFab(false);
-        adapter.notifyDataSetChanged();
-    }
-
-    public void refreshData() {
-        Log.d(TAG, "refreshData");
-        adapter.notifyDataSetChanged();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        } else {
+            List<WeatherLocation> locationList = viewModel.getLocationList();
+            if (locationList != null) {
+                // Load saved locations from SharedPreferences
+                adapter = new WeatherLocationAdapter(getActivity(), R.layout.row_item, locationList);
+                setListAdapter(adapter);
+            } else {
+                Log.d(TAG, "Empty location list!");
+            }
+        }
     }
 }
