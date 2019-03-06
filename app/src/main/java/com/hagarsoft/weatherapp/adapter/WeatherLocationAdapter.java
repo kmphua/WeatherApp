@@ -68,4 +68,16 @@ public class WeatherLocationAdapter extends ArrayAdapter<WeatherLocation> {
         TextView txtIcon;
         TextView txtTemp;
     }
+
+    public WeatherLocation getItem(int position) {
+        return data.get(position);
+    }
+
+    public void addItem(WeatherLocation location) {
+        data.add(location);
+    }
+
+    public void deleteItem(int position) {
+        data.remove(position);
+    }
 }

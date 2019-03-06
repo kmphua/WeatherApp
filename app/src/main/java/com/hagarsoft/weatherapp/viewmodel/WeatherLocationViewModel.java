@@ -1,18 +1,23 @@
 package com.hagarsoft.weatherapp.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 import com.hagarsoft.weatherapp.data.WeatherLocationsRepository;
 
 import java.util.List;
 
-public class WeatherLocationViewModel extends ViewModel {
+public class WeatherLocationViewModel extends AndroidViewModel {
+
+    public WeatherLocationViewModel(Application application) {
+        super(application);
+    }
 
     private final MutableLiveData<Integer> selectedLocation = new MutableLiveData<>();
 
-    private WeatherLocationsRepository repository = new WeatherLocationsRepository();
+    private WeatherLocationsRepository repository = new WeatherLocationsRepository(getApplication().getApplicationContext());
 
     public void selectLocation(int i) {
         selectedLocation.setValue(i);

@@ -7,7 +7,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.hagarsoft.weatherapp.adapter.WeatherLocationAdapter;
@@ -22,6 +25,7 @@ public class MainFragment extends ListFragment {
 
     private WeatherLocationViewModel viewModel;
     private WeatherLocationAdapter adapter;
+    private ListView listView;
 
     public MainFragment() {
 
@@ -42,7 +46,32 @@ public class MainFragment extends ListFragment {
         adapter = new WeatherLocationAdapter(getActivity(), R.layout.row_item, viewModel.getLocationList());
         setListAdapter(adapter);
     }
-    
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        listView = (ListView)rootView.findViewById(android.R.id.list);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                WeatherLocation location = adapter.getItem(i);
+                Snackbar sb = Snackbar.make(view, String.format(getString(R.string.delete_location), location.getName()), Snackbar.LENGTH_LONG);
+                sb.setAction(R.string.ok, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Log.d(TAG, "Deleted item at position " + i);
+                                viewModel.deleteLocation(i);
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+                sb.show();
+                return true;
+            }
+        });
+        return rootView;
+    }
+
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         WeatherLocation location = (WeatherLocation) getListAdapter().getItem(position);
