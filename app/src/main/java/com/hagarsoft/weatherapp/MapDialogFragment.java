@@ -139,7 +139,7 @@ public class MapDialogFragment extends DialogFragment implements OnMapReadyCallb
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
         LatLng latLng = new LatLng(37.7688472,-122.4130859);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,8));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,7));
 
         // Listen for map click events
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {

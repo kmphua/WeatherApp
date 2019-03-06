@@ -265,6 +265,7 @@ public class WeatherFragment extends Fragment {
         }
     }
 
+    /*
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -289,5 +290,5 @@ public class WeatherFragment extends Fragment {
             bmImage.setImageBitmap(result);
         }
     }
-
+    */
 }
