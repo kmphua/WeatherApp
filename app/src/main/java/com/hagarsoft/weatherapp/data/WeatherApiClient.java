@@ -20,11 +20,8 @@ public class WeatherApiClient {
     private static final String OPEN_FORECAST_API =
             "http://api.openweathermap.org/data/2.5/forecast?lat=%.6f&lon=%.6f&units=%s";
 
-    public static String getCurrentWeather(Context context, double lat, double lon){
+    public static String getCurrentWeather(Context context, double lat, double lon, String measurement){
         try {
-            // TODO: Get current imperial/metric settings
-            String measurement = "metric";
-
             URL url = new URL(String.format(OPEN_WEATHER_API, lat, lon, measurement));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();
@@ -48,11 +45,8 @@ public class WeatherApiClient {
         }
     }
 
-    public static String getWeatherForecast(Context context, double lat, double lon){
+    public static String getWeatherForecast(Context context, double lat, double lon, String measurement){
         try {
-            // TODO: Get current imperial/metric settings
-            String measurement = "metric";
-
             URL url = new URL(String.format(OPEN_FORECAST_API, lat, lon, measurement));
             HttpURLConnection connection =
                     (HttpURLConnection)url.openConnection();

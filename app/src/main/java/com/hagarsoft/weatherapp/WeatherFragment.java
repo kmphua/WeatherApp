@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.hagarsoft.weatherapp.data.Weather;
 import com.hagarsoft.weatherapp.data.WeatherApiClient;
 import com.hagarsoft.weatherapp.data.WeatherForecast;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
+import com.hagarsoft.weatherapp.util.DataStoreUtil;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
 import java.io.InputStream;
@@ -43,7 +45,7 @@ public class WeatherFragment extends Fragment {
 
     private WeatherLocationViewModel viewModel;
     private WeatherLocation currentLocation;
-    private boolean isMetric = true;    // TODO: Link to settings
+    private boolean isMetric = true;
 
     Typeface weatherFont;
     TextView tvCity;
@@ -64,6 +66,7 @@ public class WeatherFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
+        isMetric = DataStoreUtil.isMetricSystem(getContext());
     }
 
     @Override
@@ -104,7 +107,8 @@ public class WeatherFragment extends Fragment {
         Log.d(TAG, "updateWeatherData");
         new Thread(){
             public void run(){
-                final String json = WeatherApiClient.getCurrentWeather(getActivity(), lat, lon);
+                String measurement = isMetric ? "metric" : "imperial";
+                final String json = WeatherApiClient.getCurrentWeather(getActivity(), lat, lon, measurement);
                 Log.d(TAG, "JSON string = " + json);
                 if(json == null){
                     handler.post(new Runnable(){
@@ -167,7 +171,8 @@ public class WeatherFragment extends Fragment {
     private void updateForecastData(final double lat, final double lon){
         new Thread(){
             public void run(){
-                final String json = WeatherApiClient.getWeatherForecast(getActivity(), lat, lon);
+                String measurement = isMetric ? "metric" : "imperial";
+                final String json = WeatherApiClient.getWeatherForecast(getActivity(), lat, lon, measurement);
                 Log.d(TAG, "JSON string = " + json);
                 if(json == null){
                     handler.post(new Runnable(){

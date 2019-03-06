@@ -31,4 +31,4 @@ To-do features:
 Describe how to install / setup your local environement / add link to demo version.
 
 ## Contact
-Created by [@kmphua](kmphua@gmail.com) - feel free to contact me!
+Created by Kevin Phua (kmphua@gmail.com)

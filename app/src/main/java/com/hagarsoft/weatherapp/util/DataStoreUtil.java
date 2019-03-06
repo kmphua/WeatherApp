@@ -2,9 +2,11 @@ package com.hagarsoft.weatherapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hagarsoft.weatherapp.R;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 
 import java.lang.reflect.Type;
@@ -47,5 +49,14 @@ public class DataStoreUtil {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(SHARED_PREFERENCES_KEY_LOCATION_LIST, locationListJsonString);
         editor.apply();
+    }
+
+    public static boolean isMetricSystem(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String value = prefs.getString(context.getString(R.string.key_unit_of_measure), "0");
+        if (value.equalsIgnoreCase("0")) {
+            return true;
+        }
+        return false;
     }
 }

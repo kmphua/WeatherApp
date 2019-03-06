@@ -39,4 +39,10 @@
     <string name="place_not_found">Place not found</string>
     <string name="location_list_error">Could not retrieve location</string>
 
+    <!-- Settings -->
+    <string name="title_unit_of_measure">Unit of Measure</string>
+    <string name="key_unit_of_measure">key_unit_of_measure</string>
+    <string name="metric">Metric</string>
+    <string name="imperial">Imperial</string>
+
 </resources>

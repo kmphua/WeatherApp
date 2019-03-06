@@ -1,0 +1,13 @@
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.ListPreference
+        android:defaultValue="0"
+        android:dialogTitle="@string/title_unit_of_measure"
+        android:entries="@array/pref_measurement_entries"
+        android:entryValues="@array/pref_measurement_values"
+        android:key="@string/key_unit_of_measure"
+        android:summary="@string/metric"
+        android:title="@string/title_unit_of_measure" />
+
+</android.support.v7.preference.PreferenceScreen>

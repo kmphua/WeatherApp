@@ -3,6 +3,8 @@ package com.hagarsoft.weatherapp;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -50,6 +52,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            // Open Settings fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment, new SettingsFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
             return true;
         }
 
