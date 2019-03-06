@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FF0099CC">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".3">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="32sp"
+            android:layout_marginTop="@dimen/primary_text_margin"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/primary_text_margin"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            tools:ignore="InconsistentLayout" />
+
+        <TextView
+            android:id="@+id/tv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="32sp"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_below="@+id/tv_city"
+            android:layout_toLeftOf="@+id/tv_temp"
+            android:layout_toStartOf="@+id/tv_temp"
+            android:layout_alignTop="@+id/tv_temp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            tools:ignore="InconsistentLayout" />
+
+        <!--
+        <TextView
+            android:id="@+id/tv_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="18sp"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_below="@+id/tv_city"
+            android:layout_toRightOf="@+id/tv_icon"
+            android:layout_toEndOf="@+id/tv_icon"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            tools:ignore="InconsistentLayout" />
+        -->
+
+        <TextView
+            android:id="@+id/tv_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="24sp"
+            android:layout_marginTop="@dimen/primary_text_margin"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tv_city"
+            tools:ignore="InconsistentLayout" />
+
+        <TextView
+            android:id="@+id/tv_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="@dimen/subtext_size"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tv_temp"
+            tools:ignore="InconsistentLayout" />
+
+        <TextView
+            android:id="@+id/tv_rain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="@dimen/subtext_size"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tv_humidity"
+            tools:ignore="InconsistentLayout" />
+
+        <TextView
+            android:id="@+id/tv_wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorLight"
+            android:textSize="@dimen/subtext_size"
+            android:layout_marginLeft="@dimen/primary_text_margin"
+            android:layout_marginRight="@dimen/primary_text_margin"
+            android:layout_marginBottom="@dimen/subtext_size_bottom_padding"
+            android:layout_below="@+id/tv_rain"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            tools:ignore="InconsistentLayout" />
+
+    </RelativeLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_weight=".5"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/primary_text_margin"
+        android:layout_marginLeft="@dimen/primary_text_margin"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp">
+
+        <TextView
+            android:id="@+id/tv_forecast_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/forecast_title"
+            android:textSize="@dimen/subtext_size"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>
