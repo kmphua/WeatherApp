@@ -1,21 +1,18 @@
 package com.hagarsoft.weatherapp;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private MainFragment mMainFragment;
     private FloatingActionButton mFab;
 
     @Override
@@ -25,7 +22,12 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mMainFragment = (MainFragment)getSupportFragmentManager().findFragmentByTag("MainFragment");
+        // Add Main Fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment, new MainFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnClickListener(new View.OnClickListener() {
@@ -70,15 +72,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onDismiss(final DialogInterface dialog) {
-        //Fragment dialog had been dismissed
-        Log.d(TAG, "Map dialog has been dismissed");
-        if (mMainFragment != null) {
-            mMainFragment.refreshData();
-        }
     }
 
     public void hideFab(boolean hide) {

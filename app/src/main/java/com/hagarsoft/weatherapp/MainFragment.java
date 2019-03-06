@@ -92,8 +92,10 @@ public class MainFragment extends ListFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         // Show floating action button
+        Log.d(TAG, "onPrepareOptionsMenu");
         MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.hideFab(false);
+        adapter.notifyDataSetChanged();
     }
 
     public void refreshData() {
