@@ -50,13 +50,4 @@ public class DataStoreUtil {
         editor.putString(SHARED_PREFERENCES_KEY_LOCATION_LIST, locationListJsonString);
         editor.apply();
     }
-
-    public static boolean isMetricSystem(Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String value = prefs.getString(context.getString(R.string.key_unit_of_measure), "0");
-        if (value.equalsIgnoreCase("0")) {
-            return true;
-        }
-        return false;
-    }
 }

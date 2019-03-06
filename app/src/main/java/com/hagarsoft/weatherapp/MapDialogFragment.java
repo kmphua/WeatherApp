@@ -108,12 +108,19 @@ public class MapDialogFragment extends DialogFragment implements OnMapReadyCallb
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(TAG, "onSaveInstanceState Called");
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         SupportMapFragment f = (SupportMapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
-        if (f != null)
-            getFragmentManager().beginTransaction().remove(f).commit();
+        if (f != null) {
+            getFragmentManager().beginTransaction().remove(f).commitAllowingStateLoss();
+        }
     }
 
     @Override

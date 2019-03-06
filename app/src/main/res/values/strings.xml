@@ -38,6 +38,7 @@
     <string name="added_location">Added location %s</string>
     <string name="place_not_found">Place not found</string>
     <string name="location_list_error">Could not retrieve location</string>
+    <string name="forecast_title">5-day forecast</string>
 
     <!-- Settings -->
     <string name="title_unit_of_measure">Unit of Measure</string>

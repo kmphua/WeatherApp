@@ -7,4 +7,5 @@ public class WeatherForecastItem {
     public Clouds clouds;
     public Wind wind;
     public Rain rain;
+    public Sys sys;
 }

@@ -125,4 +125,22 @@
         android:layout_alignParentEnd="true"
         tools:ignore="InconsistentLayout" />
 
+    <TextView
+        android:id="@+id/tv_forecast_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/forecast_title"
+        android:textSize="@dimen/subtext_size"
+        android:layout_marginLeft="@dimen/primary_text_margin"
+        android:textStyle="bold"
+        android:layout_below="@+id/tv_wind" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_forecast_title"
+        android:layout_alignParentBottom="true" />
+
+
 </RelativeLayout>

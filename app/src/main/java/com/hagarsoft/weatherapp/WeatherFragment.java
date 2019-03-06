@@ -18,17 +18,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.hagarsoft.weatherapp.adapter.WeatherForecastAdapter;
+import com.hagarsoft.weatherapp.adapter.WeatherLocationAdapter;
 import com.hagarsoft.weatherapp.data.CurrentWeather;
 import com.hagarsoft.weatherapp.data.Weather;
 import com.hagarsoft.weatherapp.data.WeatherApiClient;
 import com.hagarsoft.weatherapp.data.WeatherForecast;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 import com.hagarsoft.weatherapp.util.DataStoreUtil;
+import com.hagarsoft.weatherapp.util.Utils;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
 import java.io.InputStream;
@@ -57,6 +61,7 @@ public class WeatherFragment extends Fragment {
     TextView tvHumidity;
     TextView tvRain;
     TextView tvWind;
+    ListView listView;
     ProgressBar progressBar;
 
     Handler handler;
@@ -70,7 +75,7 @@ public class WeatherFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
-        isMetric = DataStoreUtil.isMetricSystem(getContext());
+        isMetric = Utils.isMetricSystem(getContext());
     }
 
     @Override
@@ -81,7 +86,11 @@ public class WeatherFragment extends Fragment {
 
         viewModel.getSelectedLocation().observe(this, item -> {
             currentLocation = viewModel.getLocation(item);
+
+            // Show progress bar when retrieving web data
+            progressBar.setVisibility(ProgressBar.VISIBLE);
             updateWeatherData(currentLocation.getLat(), currentLocation.getLon());
+            updateForecastData(currentLocation.getLat(), currentLocation.getLon());
         });
     }
 
@@ -99,6 +108,7 @@ public class WeatherFragment extends Fragment {
         tvIcon.setTypeface(weatherFont);
         progressBar = (ProgressBar)rootView.findViewById(R.id.progress);
         progressBar.setIndeterminate(true);
+        listView = (ListView)rootView.findViewById(R.id.list);
         return rootView;
     }
 
@@ -110,29 +120,24 @@ public class WeatherFragment extends Fragment {
     }
 
     private void updateWeatherData(final double lat, final double lon) {
-        // Show progress bar when retrieving web data
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-
-        Log.d(TAG, "updateWeatherData");
+        //Log.d(TAG, "updateWeatherData");
         new Thread(){
             public void run(){
                 String measurement = isMetric ? "metric" : "imperial";
                 final String json = WeatherApiClient.getCurrentWeather(getActivity(), lat, lon, measurement);
-                Log.d(TAG, "JSON string = " + json);
+                //Log.d(TAG, "JSON string = " + json);
                 if(json == null){
                     handler.post(new Runnable(){
                         public void run(){
                             Toast.makeText(getActivity(),
                                     getActivity().getString(R.string.place_not_found),
                                     Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         }
                     });
                 } else {
                     handler.post(new Runnable(){
                         public void run(){
                             renderWeather(json);
-                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         }
                     });
                 }
@@ -158,7 +163,7 @@ public class WeatherFragment extends Fragment {
             }
 
             if (currWeather.wind != null) {
-                setWindSpeed(currWeather.wind.speed, degToCompass(currWeather.wind.deg));
+                setWindSpeed(currWeather.wind.speed, Utils.degToCompass(currWeather.wind.deg));
             } else {
                 tvWind.setVisibility(View.GONE);
             }
@@ -166,9 +171,10 @@ public class WeatherFragment extends Fragment {
             Weather weather = currWeather.weather[0];
             if (weather != null) {
                 setCondition(weather.description);
-                setWeatherIcon(weather.id,
+                tvIcon.setText(Utils.getWeatherIconString(getContext(),
+                        weather.id,
                         currWeather.sys.sunrise * 1000,
-                        currWeather.sys.sunrise * 1000);
+                        currWeather.sys.sunset * 1000));
             } else {
                 tvIcon.setVisibility(View.GONE);
                 tvCondition.setVisibility(View.GONE);
@@ -180,11 +186,12 @@ public class WeatherFragment extends Fragment {
     }
 
     private void updateForecastData(final double lat, final double lon){
+        //Log.d(TAG, "updateForecastData");
         new Thread(){
             public void run(){
                 String measurement = isMetric ? "metric" : "imperial";
                 final String json = WeatherApiClient.getWeatherForecast(getActivity(), lat, lon, measurement);
-                Log.d(TAG, "JSON string = " + json);
+                //Log.d(TAG, "JSON string = " + json);
                 if(json == null){
                     handler.post(new Runnable(){
                         public void run(){
@@ -209,40 +216,15 @@ public class WeatherFragment extends Fragment {
         try {
             // Convert JSON to Java Object
             WeatherForecast forecast = gson.fromJson(json, WeatherForecast.class);
+            progressBar.setVisibility(ProgressBar.INVISIBLE);
+
+            // Load saved locations from SharedPreferences
+            WeatherForecastAdapter adapter = new WeatherForecastAdapter(getActivity(), R.layout.forecast_row_item, forecast.list);
+            listView.setAdapter(adapter);
         } catch (Exception e) {
             Log.e(TAG,"Exception occurred: " + e.getLocalizedMessage());
         }
     }
-
-    private void setWeatherIcon(int actualId, long sunrise, long sunset){
-        int id = actualId / 100;
-        String icon = "";
-        if(actualId == 800){
-            long currentTime = new Date().getTime();
-            if(currentTime>=sunrise && currentTime<sunset) {
-                icon = getActivity().getString(R.string.weather_sunny);
-            } else {
-                icon = getActivity().getString(R.string.weather_clear_night);
-            }
-        } else {
-            switch(id) {
-                case 2 : icon = getActivity().getString(R.string.weather_thunder);
-                    break;
-                case 3 : icon = getActivity().getString(R.string.weather_drizzle);
-                    break;
-                case 7 : icon = getActivity().getString(R.string.weather_foggy);
-                    break;
-                case 8 : icon = getActivity().getString(R.string.weather_cloudy);
-                    break;
-                case 6 : icon = getActivity().getString(R.string.weather_snowy);
-                    break;
-                case 5 : icon = getActivity().getString(R.string.weather_rainy);
-                    break;
-            }
-        }
-        tvIcon.setText(icon);
-    }
-
 
     private void setTemp(double temperature) {
         if (tvTemp != null) {
@@ -281,12 +263,6 @@ public class WeatherFragment extends Fragment {
         if (tvCondition != null) {
             tvCondition.setText(condition);
         }
-    }
-
-    private String degToCompass(double num) {
-        double val = Math.floor((num / 22.5) + 0.5);
-        String arr[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
-        return arr[((int)val % 16)];
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
