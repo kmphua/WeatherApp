@@ -126,12 +126,6 @@ public class MapDialogFragment extends DialogFragment implements OnMapReadyCallb
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem item = menu.findItem(R.id.action_add_location);
-        item.setVisible(false);
-    }
-
-    @Override
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG, "onMapReady");
         mMap = googleMap;

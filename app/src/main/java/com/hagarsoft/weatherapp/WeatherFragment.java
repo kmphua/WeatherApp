@@ -95,8 +95,9 @@ public class WeatherFragment extends Fragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        MenuItem item=menu.findItem(R.id.action_add_location);
-        item.setVisible(false);
+        // Hide floating action button
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.hideFab(true);
     }
 
     private void updateWeatherData(final double lat, final double lon) {

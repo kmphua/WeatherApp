@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -86,6 +88,13 @@ public class MainFragment extends ListFragment {
         } else {
             Snackbar.make(this.getView(), R.string.location_list_error, Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Show floating action button
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.hideFab(false);
     }
 
     public void refreshData() {

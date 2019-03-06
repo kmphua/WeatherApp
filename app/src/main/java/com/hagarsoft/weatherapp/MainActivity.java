@@ -2,16 +2,19 @@ package com.hagarsoft.weatherapp;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements DialogInterface.OnDismissListener {
     private static final String TAG = "MainActivity";
 
     private MainFragment mMainFragment;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,15 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         setSupportActionBar(toolbar);
 
         mMainFragment = (MainFragment)getSupportFragmentManager().findFragmentByTag("MainFragment");
+
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Open map fragment to select location
+                new MapDialogFragment().show(getSupportFragmentManager(), getString(R.string.add_new_location));
+            }
+        });
     }
 
     @Override
@@ -39,8 +51,6 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
 
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_add_location) {
-            new MapDialogFragment().show(getSupportFragmentManager(), getString(R.string.add_new_location));
         }
 
         return super.onOptionsItemSelected(item);
@@ -52,6 +62,16 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
         Log.d(TAG, "Map dialog has been dismissed");
         if (mMainFragment != null) {
             mMainFragment.refreshData();
+        }
+    }
+
+    public void hideFab(boolean hide) {
+        if (mFab != null) {
+            if (hide) {
+                mFab.hide();
+            } else {
+                mFab.show();
+            }
         }
     }
 }
