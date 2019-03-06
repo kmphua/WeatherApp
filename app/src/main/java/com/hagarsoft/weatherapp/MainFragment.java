@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -43,18 +42,7 @@ public class MainFragment extends ListFragment {
         adapter = new WeatherLocationAdapter(getActivity(), R.layout.row_item, viewModel.getLocationList());
         setListAdapter(adapter);
     }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            Log.d(TAG, "Fragment visible, refreshing location data");
-            // Refresh location data
-            refreshData();
-            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-        }
-    }
-
+    
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         WeatherLocation location = (WeatherLocation) getListAdapter().getItem(position);
@@ -64,7 +52,6 @@ public class MainFragment extends ListFragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment, new WeatherFragment());
-            //fragmentTransaction.hide(this);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else {
@@ -72,7 +59,7 @@ public class MainFragment extends ListFragment {
         }
     }
 
-    private void refreshData() {
+    public void refreshData() {
         Log.d(TAG, "refreshData");
         adapter.notifyDataSetChanged();
     }

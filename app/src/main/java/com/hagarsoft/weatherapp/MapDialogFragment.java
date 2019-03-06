@@ -1,12 +1,15 @@
 package com.hagarsoft.weatherapp;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -111,6 +114,15 @@ public class MapDialogFragment extends DialogFragment implements OnMapReadyCallb
                 .findFragmentById(R.id.map);
         if (f != null)
             getFragmentManager().beginTransaction().remove(f).commit();
+    }
+
+    @Override
+    public void onDismiss(final DialogInterface dialog) {
+        super.onDismiss(dialog);
+        final Activity activity = getActivity();
+        if (activity instanceof DialogInterface.OnDismissListener) {
+            ((DialogInterface.OnDismissListener) activity).onDismiss(dialog);
+        }
     }
 
     @Override
