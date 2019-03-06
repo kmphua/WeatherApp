@@ -31,9 +31,10 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_add_location) {
+            new MapDialogFragment().show(getSupportFragmentManager(), getString(R.string.add_new_location));
         }
 
         return super.onOptionsItemSelected(item);

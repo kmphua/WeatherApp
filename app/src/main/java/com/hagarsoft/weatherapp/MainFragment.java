@@ -35,7 +35,6 @@ public class MainFragment extends ListFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
@@ -47,9 +46,9 @@ public class MainFragment extends ListFragment {
 
     @Override
     public void onHiddenChanged(boolean hidden) {
-        Log.d(TAG, "onHiddenChanged = " + hidden);
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            Log.d(TAG, "Fragment visible, refreshing location data");
             // Refresh location data
             refreshData();
             getFragmentManager().beginTransaction().detach(this).attach(this).commit();
@@ -65,33 +64,12 @@ public class MainFragment extends ListFragment {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.fragment, new WeatherFragment());
-            fragmentTransaction.hide(this);
+            //fragmentTransaction.hide(this);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         } else {
             Snackbar.make(this.getView(), R.string.location_list_error, Snackbar.LENGTH_LONG).show();
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_add_location) {
-            // Open map fragment to select location
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.fragment, new MapFragment());
-            fragmentTransaction.hide(this);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void refreshData() {

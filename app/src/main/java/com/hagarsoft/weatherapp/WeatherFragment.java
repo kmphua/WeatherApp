@@ -61,16 +61,13 @@ public class WeatherFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
-
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        Log.d(TAG, "onActivityCreated");
         super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
@@ -84,7 +81,6 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
         tvCity = (TextView)rootView.findViewById(R.id.tv_city);
         tvTemp = (TextView)rootView.findViewById(R.id.tv_temp);
@@ -129,11 +125,9 @@ public class WeatherFragment extends Fragment {
     }
 
     private void renderWeather(String json){
-        Log.d(TAG, "renderWeather");
-        Gson gson = new Gson();
         try {
             // Convert JSON to Java Object
-            CurrentWeather currWeather = gson.fromJson(json, CurrentWeather.class);
+            CurrentWeather currWeather = new Gson().fromJson(json, CurrentWeather.class);
 
             tvCity.setText(currentLocation.getName());
 
