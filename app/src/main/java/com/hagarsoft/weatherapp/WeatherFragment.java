@@ -1,26 +1,18 @@
 package com.hagarsoft.weatherapp;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,18 +20,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.hagarsoft.weatherapp.adapter.WeatherForecastAdapter;
-import com.hagarsoft.weatherapp.adapter.WeatherLocationAdapter;
 import com.hagarsoft.weatherapp.data.CurrentWeather;
 import com.hagarsoft.weatherapp.data.Weather;
 import com.hagarsoft.weatherapp.data.WeatherApiClient;
 import com.hagarsoft.weatherapp.data.WeatherForecast;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
-import com.hagarsoft.weatherapp.util.DataStoreUtil;
 import com.hagarsoft.weatherapp.util.Utils;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
-
-import java.io.InputStream;
-import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -2,7 +2,6 @@ package com.hagarsoft.weatherapp.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +11,7 @@ import android.widget.TextView;
 
 import com.hagarsoft.weatherapp.R;
 import com.hagarsoft.weatherapp.data.WeatherForecastItem;
-import com.hagarsoft.weatherapp.data.WeatherLocation;
 import com.hagarsoft.weatherapp.util.Utils;
-
-import java.util.List;
-import java.util.Locale;
 
 public class WeatherForecastAdapter extends ArrayAdapter<WeatherForecastItem> {
 

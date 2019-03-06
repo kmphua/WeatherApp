@@ -1,7 +1,6 @@
 package com.hagarsoft.weatherapp.data;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.hagarsoft.weatherapp.util.DataStoreUtil;
 

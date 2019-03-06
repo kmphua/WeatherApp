@@ -2,11 +2,9 @@ package com.hagarsoft.weatherapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hagarsoft.weatherapp.R;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
 
 import java.lang.reflect.Type;
