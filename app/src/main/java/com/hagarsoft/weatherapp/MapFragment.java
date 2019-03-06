@@ -1,7 +1,6 @@
 package com.hagarsoft.weatherapp;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -10,8 +9,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,6 +47,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         // Required empty public constructor
     }
 
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -65,6 +72,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             mapFragment.getMapAsync(this);
         }
         return view;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_add_location);
+        item.setVisible(false);
     }
 
     @Override
@@ -107,16 +120,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 Log.d(TAG, "city: " + cityName + ", lat:" + point.latitude + ", lon:" + point.longitude);
 
-                Snackbar snackBar = Snackbar.make(getActivity().findViewById(android.R.id.content),
-                        String.format(getString(R.string.add_new_location), cityName), Snackbar.LENGTH_LONG);
-                snackBar.setAction(R.string.add, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.d(TAG, "Added location " + mCityName);
-                        viewModel.addLocation(new WeatherLocation(mCityName, mLat, mLon));
-                    }
-                });
-                snackBar.show();
+                if (cityName != null) {
+                    Snackbar snackBar = Snackbar.make(getActivity().findViewById(android.R.id.content),
+                            String.format(getString(R.string.add_new_location), cityName), Snackbar.LENGTH_LONG);
+                    snackBar.setAction(R.string.add, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.d(TAG, "Added location " + mCityName);
+                            viewModel.addLocation(new WeatherLocation(mCityName, mLat, mLon));
+                            Toast.makeText(getContext(), String.format(getString(R.string.added_location), mCityName), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    snackBar.show();
+                }
             }
         });
 

@@ -1,6 +1,7 @@
 package com.hagarsoft.weatherapp;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
@@ -10,6 +11,8 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,9 +28,7 @@ import com.hagarsoft.weatherapp.data.WeatherLocation;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
 import java.io.InputStream;
-import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,14 +42,17 @@ public class WeatherFragment extends Fragment {
     private static final String TAG = "WeatherFragment";
 
     private WeatherLocationViewModel viewModel;
+    private WeatherLocation currentLocation;
+    private boolean isMetric = true;    // TODO: Link to settings
 
     Typeface weatherFont;
-    TextView cityField;
-    TextView updatedField;
-    TextView detailsField;
-    TextView currentTemperatureField;
-    TextView weatherIcon;
-
+    TextView tvCity;
+    TextView tvIcon;
+    TextView tvCondition;
+    TextView tvTemp;
+    TextView tvHumidity;
+    TextView tvRain;
+    TextView tvWind;
     Handler handler;
 
     public WeatherFragment() {
@@ -57,32 +61,50 @@ public class WeatherFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         weatherFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf");
+
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated");
+        super.onActivityCreated(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this.getActivity()).get(WeatherLocationViewModel.class);
 
         viewModel.getSelectedLocation().observe(this, item -> {
-            WeatherLocation location = viewModel.getLocation(item);
-            updateWeatherData(location.getLat(), location.getLon());
+            currentLocation = viewModel.getLocation(item);
+            updateWeatherData(currentLocation.getLat(), currentLocation.getLon());
         });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
         View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
-        cityField = (TextView)rootView.findViewById(R.id.city_field);
-        updatedField = (TextView)rootView.findViewById(R.id.updated_field);
-        detailsField = (TextView)rootView.findViewById(R.id.details_field);
-        currentTemperatureField = (TextView)rootView.findViewById(R.id.current_temperature_field);
-        weatherIcon = (TextView)rootView.findViewById(R.id.weather_icon);
-        weatherIcon.setTypeface(weatherFont);
-
+        tvCity = (TextView)rootView.findViewById(R.id.tv_city);
+        tvTemp = (TextView)rootView.findViewById(R.id.tv_temp);
+        tvHumidity = (TextView)rootView.findViewById(R.id.tv_humidity);
+        tvWind = (TextView)rootView.findViewById(R.id.tv_wind);
+        tvRain = (TextView)rootView.findViewById(R.id.tv_rain);
+        tvCondition = (TextView)rootView.findViewById(R.id.tv_condition);
+        tvIcon = (TextView)rootView.findViewById(R.id.tv_icon);
+        tvIcon.setTypeface(weatherFont);
         return rootView;
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        MenuItem item=menu.findItem(R.id.action_add_location);
+        item.setVisible(false);
+    }
+
     private void updateWeatherData(final double lat, final double lon) {
+        Log.d(TAG, "updateWeatherData");
         new Thread(){
             public void run(){
                 final String json = WeatherApiClient.getCurrentWeather(getActivity(), lat, lon);
@@ -107,30 +129,40 @@ public class WeatherFragment extends Fragment {
     }
 
     private void renderWeather(String json){
+        Log.d(TAG, "renderWeather");
         Gson gson = new Gson();
         try {
             // Convert JSON to Java Object
             CurrentWeather currWeather = gson.fromJson(json, CurrentWeather.class);
 
-            cityField.setText(currWeather.name.toUpperCase(Locale.US) +
-                    ", " + currWeather.sys.country);
+            tvCity.setText(currentLocation.getName());
+
+            setTemp(currWeather.main.temp);
+
+            setHumidity(currWeather.main.humidity);
+
+            if (currWeather.rain != null) {
+                setRain((int) currWeather.rain.onehour);
+            } else {
+                tvRain.setVisibility(View.GONE);
+            }
+
+            if (currWeather.wind != null) {
+                setWindSpeed(currWeather.wind.speed, degToCompass(currWeather.wind.deg));
+            } else {
+                tvWind.setVisibility(View.GONE);
+            }
 
             Weather weather = currWeather.weather[0];
-            detailsField.setText(
-                    weather.description.toUpperCase(Locale.US) +
-                            "\n" + "Humidity: " + currWeather.main.humidity + "%" +
-                            "\n" + "Pressure: " + currWeather.main.pressure + " hPa");
-
-            currentTemperatureField.setText(
-                    String.format(Locale.getDefault(), "%.2f ℃", currWeather.main.temp));
-
-            DateFormat df = DateFormat.getDateTimeInstance();
-            String updatedOn = df.format(new Date(currWeather.dt*1000));
-            updatedField.setText("Last update: " + updatedOn);
-
-            setWeatherIcon(weather.id,
-                           currWeather.sys.sunrise * 1000,
-                            currWeather.sys.sunrise * 1000);
+            if (weather != null) {
+                setCondition(weather.description);
+                setWeatherIcon(weather.id,
+                        currWeather.sys.sunrise * 1000,
+                        currWeather.sys.sunrise * 1000);
+            } else {
+                tvIcon.setVisibility(View.GONE);
+                tvCondition.setVisibility(View.GONE);
+            }
 
         } catch (Exception e) {
             Log.e(TAG,"Exception occurred: " + e.getLocalizedMessage());
@@ -197,7 +229,53 @@ public class WeatherFragment extends Fragment {
                     break;
             }
         }
-        weatherIcon.setText(icon);
+        tvIcon.setText(icon);
+    }
+
+
+    private void setTemp(double temperature) {
+        if (tvTemp != null) {
+            Resources res = getResources();
+            String temperatureText = res.getString(R.string.format_temp, temperature, isMetric ? "°C" : "°F");
+            tvTemp.setText(temperatureText);
+        }
+    }
+
+    private void setHumidity(int humidity) {
+        if (tvHumidity != null) {
+            Resources res = getResources();
+            String humidityText = res.getString(R.string.format_humidity, humidity);
+            tvHumidity.setText(humidityText);
+        }
+    }
+
+    private void setRain(int rain) {
+        if (tvRain != null) {
+            Resources res = getResources();
+            String humidityText = res.getString(R.string.format_rain, rain);
+            tvRain.setText(humidityText);
+        }
+    }
+
+    private void setWindSpeed(double windSpeed, String windDir) {
+        if (tvWind != null) {
+            Resources res = getResources();
+            String windText = res.getString(R.string.format_wind,
+                    windSpeed, isMetric?"m/s":"mph", windDir);
+            tvWind.setText(windText);
+        }
+    }
+
+    private void setCondition(String condition) {
+        if (tvCondition != null) {
+            tvCondition.setText(condition);
+        }
+    }
+
+    private String degToCompass(double num) {
+        double val = Math.floor((num / 22.5) + 0.5);
+        String arr[] = {"N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"};
+        return arr[((int)val % 16)];
     }
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
