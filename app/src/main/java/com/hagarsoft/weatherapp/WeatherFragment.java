@@ -16,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +57,8 @@ public class WeatherFragment extends Fragment {
     TextView tvHumidity;
     TextView tvRain;
     TextView tvWind;
+    ProgressBar progressBar;
+
     Handler handler;
 
     public WeatherFragment() {
@@ -93,6 +97,8 @@ public class WeatherFragment extends Fragment {
         tvCondition = (TextView)rootView.findViewById(R.id.tv_condition);
         tvIcon = (TextView)rootView.findViewById(R.id.tv_icon);
         tvIcon.setTypeface(weatherFont);
+        progressBar = (ProgressBar)rootView.findViewById(R.id.progress);
+        progressBar.setIndeterminate(true);
         return rootView;
     }
 
@@ -104,6 +110,9 @@ public class WeatherFragment extends Fragment {
     }
 
     private void updateWeatherData(final double lat, final double lon) {
+        // Show progress bar when retrieving web data
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+
         Log.d(TAG, "updateWeatherData");
         new Thread(){
             public void run(){
@@ -116,12 +125,14 @@ public class WeatherFragment extends Fragment {
                             Toast.makeText(getActivity(),
                                     getActivity().getString(R.string.place_not_found),
                                     Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         }
                     });
                 } else {
                     handler.post(new Runnable(){
                         public void run(){
                             renderWeather(json);
+                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         }
                     });
                 }

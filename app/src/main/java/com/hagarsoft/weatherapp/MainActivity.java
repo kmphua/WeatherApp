@@ -59,6 +59,14 @@ public class MainActivity extends AppCompatActivity implements DialogInterface.O
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             return true;
+        } else if (id == R.id.action_help) {
+            // Open Help fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.fragment, new HelpFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

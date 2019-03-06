@@ -5,6 +5,15 @@
     android:layout_height="match_parent"
     android:background="#FF0099CC">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" />
+
     <TextView
         android:id="@+id/tv_city"
         android:layout_width="fill_parent"
