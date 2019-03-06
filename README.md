@@ -17,18 +17,15 @@ List of features:
 * Show a way to remove locations from the list
 * Add locations by placing a pin on map
 * Show today's forecast for a location
+* Show 5-day forecast for a location
 * Help screen
 * Settings page
 
-To-do features:
-* Show 5-day forecast for a location
-* Search for known locations
-
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
-
-## Usage
-Describe how to install / setup your local environement / add link to demo version.
+![Example screenshot](./img/home_page.png)
+![Example screenshot](./img/add_location_2.png)
+![Example screenshot](./img/weather_detail_portrait.png)
+![Example screenshot](./img/settings_page.png)
 
 ## Contact
 Created by Kevin Phua (kmphua@gmail.com)
