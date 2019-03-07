@@ -5,7 +5,6 @@ Weather Android app
 * [Introduction](#introduction)
 * [Features](#features)
 * [Screenshots](#screenshots)
-* [Usage](#usage)
 * [Contact](#contact)
 
 ## Introduction
