@@ -2,6 +2,7 @@ package com.hagarsoft.weatherapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.support.v7.preference.PreferenceManager;
 
 import com.hagarsoft.weatherapp.R;
@@ -60,5 +61,10 @@ public class Utils {
             }
         }
         return icon;
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null;
     }
 }

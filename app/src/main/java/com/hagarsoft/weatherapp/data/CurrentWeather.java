@@ -1,7 +1,5 @@
 package com.hagarsoft.weatherapp.data;
 
-import com.hagarsoft.weatherapp.util.StringDumpUtils;
-
 public class CurrentWeather {
     public Coord coord;
     public Sys sys;
@@ -14,9 +12,4 @@ public class CurrentWeather {
     public long dt;
     public int id;
     public String name;
-
-    @Override
-    public String toString() {
-        return StringDumpUtils.dump(this);
-    }
 }

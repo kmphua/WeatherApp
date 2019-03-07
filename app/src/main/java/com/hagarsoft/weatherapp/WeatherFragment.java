@@ -1,6 +1,8 @@
 package com.hagarsoft.weatherapp;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -77,10 +79,25 @@ public class WeatherFragment extends Fragment {
         viewModel.getSelectedLocation().observe(this, item -> {
             currentLocation = viewModel.getLocation(item);
 
-            // Show progress bar when retrieving web data
-            progressBar.setVisibility(ProgressBar.VISIBLE);
-            updateWeatherData(currentLocation.getLat(), currentLocation.getLon());
-            updateForecastData(currentLocation.getLat(), currentLocation.getLon());
+            // Check network connectivity
+            if (Utils.isNetworkConnected(getContext())) {
+                // Show progress bar when retrieving web data
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                updateWeatherData(currentLocation.getLat(), currentLocation.getLon());
+                updateForecastData(currentLocation.getLat(), currentLocation.getLon());
+            } else {
+                // Show alert dialog
+                new AlertDialog.Builder(getContext())
+                        .setTitle(R.string.network_error_title)
+                        .setMessage(R.string.network_error_message)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Continue with delete operation
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
         });
     }
 
@@ -124,7 +141,6 @@ public class WeatherFragment extends Fragment {
     }
 
     private void updateWeatherData(final double lat, final double lon) {
-        //Log.d(TAG, "updateWeatherData");
         new Thread(){
             public void run(){
                 String measurement = isMetric ? "metric" : "imperial";

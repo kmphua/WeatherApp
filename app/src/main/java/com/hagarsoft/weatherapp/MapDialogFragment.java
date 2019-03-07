@@ -1,6 +1,7 @@
 package com.hagarsoft.weatherapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.location.Address;
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.hagarsoft.weatherapp.data.WeatherLocation;
+import com.hagarsoft.weatherapp.util.Utils;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
 import java.io.IOException;
@@ -131,7 +133,6 @@ public class MapDialogFragment extends DialogFragment implements OnMapReadyCallb
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d(TAG, "onMapReady");
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
@@ -183,5 +184,19 @@ public class MapDialogFragment extends DialogFragment implements OnMapReadyCallb
             }
         });
 
+        // Check network connectivity
+        if (!Utils.isNetworkConnected(getContext())) {
+            // Show alert dialog
+            new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.network_error_title)
+                    .setMessage(R.string.network_error_message)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Continue with delete operation
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 }
