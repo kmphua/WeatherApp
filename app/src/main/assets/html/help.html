@@ -2,7 +2,7 @@
 <head>
     <style>
         * {
-            margin: 0;
+            margin: 5;
             padding: 0;
         }
         .imgbox {
@@ -10,34 +10,106 @@
             height: 100%;
         }
         .center-fit {
-            max-width: 100%;
-            max-height: 100vh;
+            max-width: 80%;
+            max-height: 80vh;
             margin: auto;
         }
     </style>
 </head>
-
 <body>
 
 <h1>WeatherApp Help</h1>
-
+<br>
+<h2>Introduction</h2>
+<p>
+WeatherApp is an Android app using the <a href="http://openweathermap.org/api">OpenWeatherMap API</a>. You can
+add weather locations from around the world using a Google Map and get today's weather and a 5-day
+forecast for your bookmarked locations.
+</p>
+<br>
+<h2>Usage</h2>
+<ul>
+    <a href="#link1"><li>Adding a weather location</li></a>
+    <a href="#link2"><li>Removing a weather location</li></a>
+    <a href="#link3"><li>Get today's weather and 5-day forecast</li></a>
+    <a href="#link4"><li>Settings page</li></a>
+    <a href="#link5"><li>Help page</li></a>
+</ul>
+<br>
+<a name="link1"><h3>Adding a weather location</h3></a>
+<p>
+    To add a weather location, press the add button on the bottom right corner of the home page.
+</p>
 <div class="imgbox">
     <img class="center-fit" src='home_page.png'>
 </div>
+<p>
+    A dialog box will popup and load a map. You move around the map by dragging around with one finger.
+    or zoom in and out of the map by pinching with two fingers.
+</p>
+<div class="imgbox">
+    <img class="center-fit" src='add_location_1.png'>
+</div>
+<p>
+    Tap anywhere on the map to select a location. Tap "OK" to bookmark the location, or tap "Cancel"
+to dismiss the alert dialog. <br><br>Tapping anywhere on the map will select a new location. When finished
+adding locations, tap the Back key to return to the Home page.
+</p>
+<div class="imgbox">
+    <img class="center-fit" src='add_location_2.png'>
+</div>
 
-## Features
-List of features:
-* Show a list of locations that the user has bookmarked previously
-* Show a way to remove locations from the list
-* Add locations by placing a pin on map
-* Show today's forecast for a location
-* Help screen
-* Settings page
+<a name="link2"><h3>Removing a weather location</h3></a>
+<p>
+    To remove a weather location, long tap on the desired location on the home page. An alert message will
+    popup at the bottom of the screen asking you to confirm if you want to delete the location. Tap "OK" to
+    delete the location. <br><br>If you ignore the alert message, it will disappear after 3 seconds and you have to
+    long tap again to delete a location.
+</p>
+<div class="imgbox">
+    <img class="center-fit" src='delete_location.png'>
+</div>
 
-To-do features:
-* Show 5-day forecast for a location
-* Search for known locations
+<a name="link3"><h3>Get today's weather and 5-day forecast</h3></a>
+<p>
+    To get today's weather and 5-day forecast for a location, simply tap and the desired location on the home page.<br><br>
+    For portrait orientation, the current weather will displayed at the top of the page in white, and the 5-day forecast
+    at 3 hour intervals will be displayed in a list at the bottom. Tap the Back key to return to the home page.
+</p>
 
+<div class="imgbox">
+    <img class="center-fit" src='weather_detail_portrait.png'>
+</div>
+<p>
+    For landscape orientation, the current weather will displayed at the left side of the page in white,
+    and the 5-day forecast at 3 hour intervals will be displayed in a list on the right. Tap the Back key to return to the home page.
+</p>
+<div class="imgbox">
+    <img class="center-fit" src='weather_detail_landscape.png'>
+</div>
+
+<a name="link4"><h3>Settings page</h3></a>
+<p>
+    To access the Settings page, tap on the options menu on the top right corner of the action bar and select "Settings".
+</p>
+<div class="imgbox">
+    <img class="center-fit" src='home_page_option_menu.png'>
+</div>
+<p>
+    Tap on the "Unit of Measure" option to select between Metric or Imperial system.
+</p>
+<div class="imgbox">
+    <img class="center-fit" src='settings_page.png'>
+</div>
+
+<a name="link5"><h3>Help page</h3></a>
+<p>
+    To access the Help page, tap on the options menu on the top right corner of the action bar and select "Help".
+</p>
+
+<div class="imgbox">
+    <img class="center-fit" src='help_page.png'>
+</div>
 
 </body>
 </html>
