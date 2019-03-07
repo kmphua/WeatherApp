@@ -22,9 +22,9 @@ List of features:
 
 ## Screenshots
 ![Example screenshot](./img/home_page.png)
+![Example screenshot](./img/delete_location.png)
 ![Example screenshot](./img/add_location_1.png)
 ![Example screenshot](./img/add_location_2.png)
-![Example screenshot](./img/delete_location.png)
 ![Example screenshot](./img/weather_detail_portrait.png)
 ![Example screenshot](./img/weather_detail_landscape.png)
 ![Example screenshot](./img/settings_page.png)
