@@ -9,6 +9,9 @@ import com.hagarsoft.weatherapp.data.WeatherLocationsRepository;
 
 import java.util.List;
 
+/**
+ * View model for bookmarked locations
+ */
 public class WeatherLocationViewModel extends AndroidViewModel {
 
     public WeatherLocationViewModel(Application application) {

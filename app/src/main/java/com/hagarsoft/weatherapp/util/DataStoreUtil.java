@@ -13,6 +13,9 @@ import java.util.List;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * Utility methods to read and write bookmarked locations to shared preferences
+ */
 public class DataStoreUtil {
     private final static String TAG = "DataStoreUtil";
 

@@ -9,6 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Settings fragment to access system preferences
+ */
 public class SettingsFragment extends PreferenceFragmentCompat {
 
     @Override

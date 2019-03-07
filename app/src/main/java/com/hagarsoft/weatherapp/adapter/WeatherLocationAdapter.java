@@ -15,6 +15,9 @@ import com.hagarsoft.weatherapp.data.WeatherLocation;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * List adapter for location list
+ */
 public class WeatherLocationAdapter extends ArrayAdapter<WeatherLocation> {
 
     private Context context;

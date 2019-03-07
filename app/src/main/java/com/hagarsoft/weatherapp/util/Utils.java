@@ -11,6 +11,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Utility methods
+ */
 public class Utils {
 
     public static boolean isMetricSystem(Context context) {

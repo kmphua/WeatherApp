@@ -35,10 +35,7 @@ import java.util.Locale;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MapDialogFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Popup map dialog to select locations from Google Map
  */
 public class MapDialogFragment extends DialogFragment implements OnMapReadyCallback {
     private static final String TAG = "MapDialogFragment";

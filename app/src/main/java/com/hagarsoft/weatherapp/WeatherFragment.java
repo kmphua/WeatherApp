@@ -31,12 +31,7 @@ import com.hagarsoft.weatherapp.util.Utils;
 import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link WeatherFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link WeatherFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Weather fragment to display current weather and 5-day forecast for a location
  */
 public class WeatherFragment extends Fragment {
     private static final String TAG = "WeatherFragment";

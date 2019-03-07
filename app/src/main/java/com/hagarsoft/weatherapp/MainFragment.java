@@ -21,7 +21,7 @@ import com.hagarsoft.weatherapp.viewmodel.WeatherLocationViewModel;
 import java.util.List;
 
 /**
- * A placeholder fragment containing a simple view.
+ * Home page fragment to list bookmarked weather locations
  */
 public class MainFragment extends ListFragment {
     private static final String TAG = "MainFragment";

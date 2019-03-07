@@ -10,6 +10,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+/**
+ * Single activity to host multiple fragments
+ */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 

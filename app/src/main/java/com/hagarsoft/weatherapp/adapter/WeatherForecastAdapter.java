@@ -13,6 +13,9 @@ import com.hagarsoft.weatherapp.R;
 import com.hagarsoft.weatherapp.data.WeatherForecastItem;
 import com.hagarsoft.weatherapp.util.Utils;
 
+/**
+ * List adapter for 5-day forecast list
+ */
 public class WeatherForecastAdapter extends ArrayAdapter<WeatherForecastItem> {
 
     private Context context;

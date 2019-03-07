@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 
+/**
+ * Help page fragment with Webview to load internal help webpage from assets folder
+ */
 public class HelpFragment extends Fragment {
 
     private WebView mWebview;
